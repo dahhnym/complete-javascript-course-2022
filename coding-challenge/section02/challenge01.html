@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>BMI Calculator</title>
+</head>
+<body>
+    <div class="container mx-auto max-w-3xl">
+        <div class="mt-10 sm:mt-0">
+            <div class="md:grid md:grid-cols-3 md:gap-6">
+                <div class="md:col-span-1">
+                    <div class="px-4 sm:px-0">
+                        <h1 class="text-lg font-medium leading-6 text-gray-900">BMI Calculator</h1>
+                        <p class="mt-1 text-base text-gray-600">Enter your weight and height.</p>
+                    </div>
+                </div>
+                <div class="mt-5 md:mt-0 md:col-span-2">
+                    <form action="#" method="POST">
+                        <div
+                            class="shadow overflow-hidden sm:rounded-md grid grid-cols-6 gap-6 px-4 py-5 bg-white sm:p-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="weight" class="block text-sm font-medium text-gray-700">Weight</label>
+                                <div>
+                                    <input type="text" name="weight" id="mass"
+                                        class="mt-2 p-1.5 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-700 rounded-md">
+                                    <span class="text-sm font-medium text-gray-700">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <label for="height" class="block text-sm font-medium text-gray-700">Height</label>
+                                <input type="text" name="height" id="height"
+                                    class="mt-2 p-1.5 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <span class="text-sm font-medium text-gray-700">cm</span>
+                            </div>
+                            <div class=" text-center col-span-6">
+                                <p id="result" class="mt-1 text-gray-600 mb-2"></p>
+                                <button type="submit" id="submitBtn"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Calculate</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mass = document.querySelector("#mass");
+        const height = document.querySelector("#height");
+
+        const calculateBMI = (inputMass, inputHeight) => {
+            return parseInt(inputMass) / (parseInt(inputHeight) * 0.01) ** 2
+        }
+
+        const button = document.querySelector("#submitBtn");
+        const div = document.querySelector("#result");
+
+        button.addEventListener('click', (e) => {
+            e.preventDefault()
+            if(mass.value === "" || height.value === ""){
+                alert("Please enter your weight and height.")
+                return
+            }
+
+            if(isNaN(parseInt(mass.value)) || isNaN(parseInt(height.value))){
+                alert("Please enter a number of your weight and height.")
+                return
+            }
+
+            const result = calculateBMI(mass.value, height.value);
+            let category;
+            if(result < 18.5){
+                category = "underweight";
+            } else if(result >= 18.5 && result < 25){
+                category = "normal weight"
+            } else if(result >= 25 && result < 30){
+                category = "overweight"
+            } else {
+                category = "obesity";
+            }
+
+            div.innerHTML = `Your BMI is ${result.toFixed(2)}, which indicates ${category}.`
+        })
+    </script>
+</body>
+</html>

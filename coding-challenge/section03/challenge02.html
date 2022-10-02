@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Calculator</title>
+    <style></style>
+</head>
+<body>
+    <script>
+        // Test data: 125, 555 and 44
+        const calcTip = (billValue) => billValue >=50 && billValue <=300 ? billValue*0.15 : billValue*0.2;
+
+        const bills = [125,555,44];
+        const tips = [];
+        let total = [];
+        bills.forEach(bill => tips.push(calcTip(bill)));
+        console.log('tips', tips);
+        for(let i=0; i < bills.length; i++){
+            total.push(bills[i]+tips[i]);
+        }
+        console.log('total', total)
+    </script>
+</body>
+</html>

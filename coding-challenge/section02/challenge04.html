@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Calculator</title>
+    <style>
+      #display {
+        margin-top: 1rem;
+      }
+    </style>
+</head>
+<body>  
+  <h1>Tip Calculator</h1>
+  <p>The tip is <strong>15%</strong> if the bill is more than 50 and less than 300. If different, it is <strong>20%</strong>.</p>
+    <form class='form'>
+    <label for="bill">Bill</label>
+    <input type="number" name='bill' class='bill-input' />
+    <input type="submit" value='submit' class='btn-submit'>
+  </form> 
+  <div id='display'></div>
+  <script>
+    const billInput = document.querySelector('.bill-input');
+    const submitBtn = document.querySelector('.btn-submit');
+    const form = document.querySelector('.form');
+    const display = document.querySelector('#display');      
+      
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const billAmount = Number(billInput.value);
+      const tip = billAmount >= 50 && billAmount <= 300 ? billAmount*0.15 : billAmount*0.2;   
+      const render = () => {
+        display.innerHTML = `▶ If the bill is ${billAmount}, the tip will be ${tip}, and the total value will be ${billAmount+tip}.`;
+      }
+      render();
+    }) 
+  </script>
+</body>
+</html>
