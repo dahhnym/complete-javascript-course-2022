@@ -14,3 +14,5 @@
 
 1. Using the received data, render a country by using [the countries API](https://restcountries.com/#api-endpoints-v2-all)
 2. Handle errors.
+
+[Demo](https://dahhnym.github.io/complete-javascript-course-2022/coding-challenge/section16_promises-async-await-ajax/challenge01/index.html)
