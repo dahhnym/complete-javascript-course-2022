@@ -2,7 +2,6 @@
 
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
-console.log(countriesContainer);
 
 const renderCountry = function (data, className = '') {
   const html = `
@@ -25,33 +24,23 @@ const renderCountry = function (data, className = '') {
   countriesContainer.style.opacity = 1;
 };
 
-const getCountryAndNeighbor = function (country) {
-  // AJAX call country 1
-  const request = new XMLHttpRequest();
-  request.open('GET', `https://restcountries.com/v2/name/${country}`);
-  request.send();
+const getCountryData = function (country) {
+  fetch(`https://restcountries.com/v2/name/${country}`).then(res => {
+    res
+      .json()
+      .then(
+        // res.json()도 비동기 함수로서 promise를 반환한다. 따라서 then()을 사용해서 콜백함수를 통해 promise 처리를 해줘야한다.
+        data => {
+          renderCountry(data[0]);
+          const neighbor = data[0].borders?.[0];
 
-  request.addEventListener('load', function () {
-    const [data] = JSON.parse(this.responseText);
-
-    // Render country 1
-    renderCountry(data);
-    // Get neighbor contry
-    const neighbor = data.borders?.[0];
-    if (!neighbor) return;
-
-    // AJAX call country 2
-    const request2 = new XMLHttpRequest();
-    request2.open('GET', `https://restcountries.com/v2/alpha/${neighbor}`);
-    request2.send();
-
-    request2.addEventListener('load', function () {
-      const data2 = JSON.parse(this.responseText);
-
-      // Render country 2
-      renderCountry(data2, 'neighbour');
-    });
+          if (!neighbor) return;
+          return fetch(`https://restcountries.com/v2/alpha/${neighbor}`);
+        }
+      )
+      .then(res => res.json())
+      .then(data => renderCountry(data, 'neighbour'));
   });
 };
 
-getCountryAndNeighbor('usa');
+getCountryData('germany');
