@@ -6,24 +6,30 @@ const btn = document.querySelector('.btn-country');
 
 const whereAmI = function (lat, lon) {
   fetch(`https://geocode.xyz/${lat},${lon}?geoit=json&auth=${authCode}`)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error(`Problem with geocoding ${res.status}}`);
+      return res.json();
+    })
     .then(resJson => {
-      console.log(resJson);
       if (!resJson) {
-        throw Error(`Unknown Location`);
+        throw new Error(`Unknown Location`);
       }
       if (!resJson.city) {
-        throw Error(`City Not Found!`);
+        throw new Error(`City Not Found!`);
       }
       if (!resJson.country) {
-        throw Error(`Country Not Found!`);
+        throw new Error(`Country Not Found!`);
       }
       const { city, country } = resJson;
       console.log(`You are in ${city}, ${country}`);
-      return country;
+      return fetch(`https://restcountries.com/v2/name/${country}`);
     })
-    .then(country => getCountryData(country))
-    .catch(err => alert(`Error: ${err}`));
+    .then(res => {
+      if (!res.ok) throw new Error(`Country not found (${res.status})`);
+      return res.json();
+    })
+    .then(data => renderCountry(data[0]))
+    .catch(err => alert(`Error: ${err.message}`));
 };
 
 const renderCountry = function (data, className = '') {
@@ -47,17 +53,6 @@ const renderCountry = function (data, className = '') {
   countriesContainer.style.opacity = 1;
 };
 
-const getCountryData = function (country) {
-  fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(res => res.json())
-    .then(resJson => {
-      const data = resJson[0];
-      renderCountry(data); ///
-    })
-    .catch(err => console.log(err.message));
-};
-
 btn.addEventListener('click', () => whereAmI(52.508, 13.381));
-
 // whereAmI(19.037, 72.873);
 // whereAmI(-33.933, 18.474);
